@@ -22,48 +22,28 @@ class Game:
         draw.Window( self.board, self.score, self.health )
 
     def init_array2(self):
-        out= [0,0]
-        board = np.random.randint(1,3, size=(HEIGHT,WIDTH))
-        for x in range(HEIGHT):
-            for y in range(WIDTH):
-                out[board[x][y] -1] += 1
-        for x in range(len(out)):
-            if out[x] == 0:
-                return self.init_array2()
+        board = np.random.randint( 1, 3, size=(HEIGHT, WIDTH) )
+        print( board )
         return board
-        #return [[random.randrange( 1, 3 ) for x in range( WIDTH )] for y in range( HEIGHT )]
+        # return [[random.randrange( 1, 3 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def init_array3(self):
         board = np.random.randint( 1, 4, size=(HEIGHT, WIDTH) )
-        print(board)
+        print( board )
         return board
-        #return [[random.randrange( 1, 4 ) for x in range( WIDTH )] for y in range( HEIGHT )]
+        # return [[random.randrange( 1, 4 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def init_array4(self):
-        out = [0, 0, 0, 0]
-
         board = np.random.randint( 1, 5, size=(HEIGHT, WIDTH) )
-        for x in range( HEIGHT ):
-            for y in range( WIDTH ):
-                out[board[x][y] - 1] += 1
-        for x in range( len( out ) ):
-            if out[x] == 0:
-                return self.init_array4()
+        print( board )
         return board
-        #return [[random.randrange( 1, 5 ) for x in range( WIDTH )] for y in range( HEIGHT )]
+        # return [[random.randrange( 1, 5 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def init_array5(self):
-        out = [0, 0, 0, 0,0]
-
         board = np.random.randint( 1, 5, size=(HEIGHT, WIDTH) )
-        for x in range( HEIGHT ):
-            for y in range( WIDTH ):
-                out[board[x][y] - 1] += 1
-        for x in range( len( out ) ):
-            if out[x] == 0:
-                return self.init_array5()
+        print( board )
         return board
-        #return [[random.randrange( 1, 6 ) for x in range( WIDTH )] for y in range( HEIGHT )]
+        # return [[random.randrange( 1, 6 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def check_pos(self, x1, y1, x2, y2):
         if x1 == x2 and y1 == y2:
@@ -99,16 +79,38 @@ class Game:
                     anker_i -= 1
             for i in range( anker_i + 1 ):
                 self.board[i][j] = 0
-        anker_i = 0
+
         for j in range( WIDTH - 1, -1, -1 ):
             if self.board[HEIGHT - 1][j] == 0:
-                anker_i += 1
-                for i in range( HEIGHT - 1, -1, -1 ):
-                    for k in range( j, -1, -1 ):
-                        self.board[i][k] = self.board[i][k - 1]
-        for i in range( HEIGHT ):
-            for k in range( anker_i ):
-                self.board[i][k] = 0
+                for i in range( HEIGHT - 1,-1,-1):
+                    for k in range( j-1,-1,-1):
+                        self.board = self.shift( i, k, 1 )
+
+    def shift_vector(self, v, i, n, empty=0):
+        if n < 0:
+            return self.shift_vector( v[::-1], len( v ) - i - 1, -n )[::-1]
+        if n < len( v ) - i:
+            # Find n empty places after i
+            idx = np.where( np.cumsum( v[i + 1:] == empty ) == n )[0]
+            last_zero_idx = idx[0] if len( idx ) > 0 else len( v ) - i - 1
+            # Get non-empty values
+            v_slice = v[i + 1:i + last_zero_idx + 1]
+            values = v_slice[np.where( v_slice != empty )[0]]
+            # Copy to vector
+            v[i + n] = v[i]
+            r = range( i + n + 1, min( i + last_zero_idx + 2, len( v ) ) )
+            v[r] = values[:len( r )]
+        v[i:i + n] = empty
+        return v
+
+    def shift(self, i, j, n, empty=0, inplace=False):
+        out = self.board
+        if not inplace:
+            out = self.board.copy()
+
+        out[i, :] = self.shift_vector( out[i, :], j, n, empty=empty )
+
+        return out
 
     def check_health(self):
         if self.counter == 1:
