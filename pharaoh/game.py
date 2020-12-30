@@ -23,25 +23,21 @@ class Game:
 
     def init_array2(self):
         board = np.random.randint( 1, 3, size=(HEIGHT, WIDTH) )
-        print( board )
         return board
         # return [[random.randrange( 1, 3 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def init_array3(self):
         board = np.random.randint( 1, 4, size=(HEIGHT, WIDTH) )
-        print( board )
         return board
         # return [[random.randrange( 1, 4 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def init_array4(self):
         board = np.random.randint( 1, 5, size=(HEIGHT, WIDTH) )
-        print( board )
         return board
         # return [[random.randrange( 1, 5 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 
     def init_array5(self):
         board = np.random.randint( 1, 5, size=(HEIGHT, WIDTH) )
-        print( board )
         return board
         # return [[random.randrange( 1, 6 ) for x in range( WIDTH )] for y in range( HEIGHT )]
 

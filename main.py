@@ -3,11 +3,12 @@ from pharaoh import draw
 from pharaoh.game import Game
 from pharaoh.constants import FPS, WIDTH, HEIGHT, TILE_LENGTH
 
-screen = draw.Screen( WIDTH, HEIGHT, TILE_LENGTH )
+screen = draw.Screen( TILE_LENGTH )
 
 
 def get_row_col_from_mouse(pos):
     x, y = pos
+    print( y, x )
     row = y // TILE_LENGTH
     col = x // TILE_LENGTH
     return row, col
@@ -66,7 +67,6 @@ if __name__ == '__main__':
                         selected = False
                         selected_row = None
                         selected_col = None
-                        print(game.tiles,difficulty)
         pygame.display.update()
 
     pygame.quit()
