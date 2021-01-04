@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from pharaoh import draw, sounds
 from pharaoh.game import Game
@@ -23,12 +25,14 @@ if __name__ == '__main__':
     difficulty = 2
     score = 0
     health = 5
-    game = Game( screen, difficulty, score, health )
+    sound = True
+    game = Game( screen, difficulty, score, health, sound )
 
     selected = False
     selected_row = None
     selected_col = None
     game_over = False
+    play = True
 
     pygame.mixer.init()
     music = sounds.load_sound( "music" )
@@ -38,37 +42,38 @@ if __name__ == '__main__':
     while run:
         clock.tick( FPS )
 
-        if game.health == 0:
-            draw.GameOver( game.score )
+        if game.health == 0 and play == True:
             sounds.play_effect( "win" )
+            draw.GameOver( game.score, game.health )
             game_over = True
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE and game_over == True:
-                        difficulty = 2
-                        score = 0
-                        health = 5
-                        game = Game( screen, difficulty, score, health )
-
-                        selected = False
-                        selected_row = None
-                        selected_col = None
-                        game_over = False
+            play = False
 
         if game.tiles == 0:
             if difficulty < 5:
                 difficulty += 1
-            game = Game( screen, difficulty, game.score, game.health )
-
-
+            game = Game( screen, difficulty, game.score, game.health, game.sound )
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and game_over == True:
+                    difficulty = 2
+                    score = 0
+                    health = 5
+                    game = Game( screen, difficulty, score, health )
+
+                    selected = False
+                    selected_row = None
+                    selected_col = None
+                    game_over = False
+                    play = True
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()  # tuple from the left-click
                 row, col = get_row_col_from_mouse( mouse_pos )
+                print( row, col, "aici" )
                 if col < WIDTH and row < HEIGHT and game_over == False:
                     if not selected:
                         game.counter = 0
@@ -81,12 +86,36 @@ if __name__ == '__main__':
                         if game.check_pos( selected_row, selected_col, row, col ):
                             game.drop_tile()
                             game.check_health()
-                            draw.Window( game.board, game.score, game.health )
-                            sounds.play_effect( "pop" )
+                            draw.Window( game.board, game.score, game.health, game.sound )
+                            sounds.play_effect( "tiles_drop" )
 
                         else:
                             game.reset()
 
+                        selected = False
+                        selected_row = None
+                        selected_col = None
+                elif col == -2 and row == 10 and not selected:
+                    if game.sound == True:
+                        game.sound = False
+                        draw.Window( game.board, game.score, game.health, game.sound )
+                        music.stop()
+                    elif game.sound == False:
+                        game.sound = True
+                        draw.Window( game.board, game.score, game.health, game.sound )
+                        music.play( -1 )
+                elif col == -2 and row == 10 and selected:
+                    if game.sound == True:
+                        game.sound = False
+                        game.reset()
+                        music.stop()
+                        selected = False
+                        selected_row = None
+                        selected_col = None
+                    elif game.sound == False:
+                        game.sound = True
+                        game.reset()
+                        music.play( -1 )
                         selected = False
                         selected_row = None
                         selected_col = None

@@ -1,16 +1,19 @@
 import random
+import time
+
 import numpy as np
 from pharaoh import draw
 from pharaoh.constants import WIDTH, HEIGHT, TILES
 
 
 class Game:
-    def __init__(self, screen, number, score, health):
+    def __init__(self, screen, number, score, health,sound):
         self.tiles = TILES
         self.counter = 0
         self.health = health
         self.screen = screen
         self.score = score
+        self.sound= sound
         if number == 2:
             self.board = self.init_array2()
         elif number == 3:
@@ -19,7 +22,7 @@ class Game:
             self.board = self.init_array4()
         else:
             self.board = self.init_array5()
-        draw.Window( self.board, self.score, self.health )
+        draw.Window( self.board, self.score, self.health,self.sound)
 
     def init_array2(self):
         board = np.random.randint( 1, 3, size=(HEIGHT, WIDTH) )
@@ -90,6 +93,7 @@ class Game:
                             self.board = self.shift( i, k, 1 )
             anker_i -= 1
 
+
     def shift_vector(self, v, i, n, empty=0):
         if n < 0:
             return self.shift_vector( v[::-1], len( v ) - i - 1, -n )[::-1]
@@ -126,4 +130,4 @@ class Game:
         for x in range( HEIGHT ):
             for y in range( WIDTH ):
                 self.board[x][y] = abs( self.board[x][y] )
-        draw.Window( self.board, self.score, self.health )
+        draw.Window( self.board, self.score, self.health ,self.sound)

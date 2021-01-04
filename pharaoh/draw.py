@@ -7,7 +7,7 @@ images_dict = {}
 
 
 def Upload_Img():
-    images = ["hieroglyph", "scarab", "eye", "eagle", "tablet", "cartouche", "bgimage"]
+    images = ["hieroglyph", "scarab", "eye", "eagle", "tablet", "cartouche", "bgimage","mute","unmute"]
     for i in range( len( images ) ):
         file_path = "Images/" + images[i] + ".png"
         images_dict[images[i]] = pygame.image.load( file_path )
@@ -30,10 +30,11 @@ def Screen(tile_length):
     return screen
 
 
-def Window(board, score, health):
+def Window(board, score, health,sound):
     screen.blit( images_dict["bgimage"], (0, 0) )
     Draw_Bar( score, health )
     Draw_Board( board )
+    Draw_Sound(sound)
 
 
 _circle_cache = {}
@@ -78,13 +79,24 @@ def render(text, font, gfcolor=pygame.Color( 253, 193, 78 ), ocolor=(38, 28, 3),
     surf.blit( textsurface, (opx, opx) )
     return surf
 
+def Draw_Sound(sound):
+    img = None
+    x = To_Pixels( 0 ) + 10
+    y = To_Pixels( 11 ) + 10
+
+    if sound == True:
+        img = images_dict["mute"]
+    elif sound == False:
+        img = images_dict["unmute"]
+    screen.blit( img, (x, y) )
 
 def Draw_Bar(score, health):
+
+
     font = pygame.font.SysFont( "pegypta ", 60 )
 
     screen.blit( render( str( score ), font ), (To_Pixels( 4.75 ), To_Pixels( 11.25 )) )
     screen.blit( render( str( health ), font ), (To_Pixels( 9.75 ), To_Pixels( 11.25 )) )
-
 
 def Draw_Board(board):
     for y in range( len( board ) ):
@@ -118,21 +130,6 @@ def Border(x, y):
     pygame.draw.rect( screen, (0, 255, 252), border, 2 )
 
 
-def GameOver(score):
-    rect = pygame.Rect( To_Pixels( 0 ), To_Pixels( 2 ),
-                        To_Pixels( 7 ), To_Pixels( 4 ) )
-    pygame.draw.rect( screen, (255, 255, 255), rect, 0 )
-    pygame.draw.rect( screen, (0, 255, 0), rect, 4 )
-    font = pygame.font.SysFont( "impact", 100 )
-    text = font.render( "SCORE", True, (0, 255, 0) )
-    screen.blit( text, (To_Pixels( 2 ), To_Pixels( 2.6 )) )
-    text = font.render( str( score ), True, (0, 255, 0) )
-    screen.blit( text, (To_Pixels( 2 ), To_Pixels( 4 )) )
-
-    rect = pygame.Rect( To_Pixels( 7.25 ), To_Pixels( 6 ),
-                        To_Pixels( 1.5 ), To_Pixels( 1 ) )
-    pygame.draw.rect( screen, (255, 255, 255), rect, 0 )
-    pygame.draw.rect( screen, (0, 255, 0), rect, 4 )
-    font = pygame.font.SysFont( "impact", 30 )
-    text = font.render( "PLAY AGAIN", True, (0, 255, 0) )
-    screen.blit( text, (To_Pixels( 0.5 ), To_Pixels( 6 )) )
+def GameOver(score,health):
+    screen.blit( images_dict["bgimage"], (0, 0) )
+    Draw_Bar( score, health )
