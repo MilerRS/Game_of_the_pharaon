@@ -14,6 +14,8 @@ class Game:
         self.screen = screen
         self.score = score
         self.sound = sound
+        self.difficulty = number
+
         if number == 2:
             self.board = self.init_array2()
         elif number == 3:
@@ -22,7 +24,7 @@ class Game:
             self.board = self.init_array4()
         else:
             self.board = self.init_array5()
-        draw.Window( self.board, self.score, self.health, self.sound )
+        draw.Window( self.board, self.score, self.health, self.sound,self.difficulty )
 
     def init_array2(self):
         board = np.random.randint( 1, 3, size=(HEIGHT, WIDTH) )
@@ -129,4 +131,4 @@ class Game:
         for x in range( HEIGHT ):
             for y in range( WIDTH ):
                 self.board[x][y] = abs( self.board[x][y] )
-        draw.Window( self.board, self.score, self.health, self.sound )
+        draw.Window( self.board, self.score, self.health, self.sound,self.difficulty )

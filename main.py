@@ -40,17 +40,6 @@ if __name__ == '__main__':
     while run:
         clock.tick( FPS )
 
-        if game.health == 0 and play == True:
-            sounds.play_effect( "game_over" )
-            draw.GameOver( game.score, game.health )
-            game_over = True
-            play = False
-
-        if game.tiles == 0:
-            if difficulty < 5:
-                difficulty += 1
-            game = Game( screen, difficulty, game.score, game.health, game.sound )
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -84,7 +73,7 @@ if __name__ == '__main__':
                         if game.check_pos( selected_row, selected_col, row, col ):
                             game.drop_tile()
                             game.check_health()
-                            draw.Window( game.board, game.score, game.health, game.sound )
+                            draw.Window( game.board, game.score, game.health, game.sound,difficulty )
                             sounds.play_effect( "tiles_drop" )
 
                         else:
@@ -96,11 +85,11 @@ if __name__ == '__main__':
                 elif col == -2 and row == 10 and not selected and game_over == False:
                     if game.sound == True:
                         game.sound = False
-                        draw.Window( game.board, game.score, game.health, game.sound )
+                        draw.Window( game.board, game.score, game.health, game.sound,difficulty )
                         music.stop()
                     elif game.sound == False:
                         game.sound = True
-                        draw.Window( game.board, game.score, game.health, game.sound )
+                        draw.Window( game.board, game.score, game.health, game.sound,difficulty )
                         music.play( -1 )
                 elif col == -2 and row == 10 and selected and game_over == False:
                     if game.sound == True:
@@ -117,6 +106,18 @@ if __name__ == '__main__':
                         selected = False
                         selected_row = None
                         selected_col = None
+
+        if game.tiles == 0:
+            if difficulty < 5:
+                difficulty += 1
+            game = Game( screen, difficulty, game.score, game.health, game.sound )
+
+        if game.health == 0 and play == True:
+            sounds.play_effect( "game_over" )
+            draw.GameOver( game.score, game.health )
+            game_over = True
+            play = False
+            
         pygame.display.update()
 
     pygame.quit()

@@ -7,7 +7,7 @@ images_dict = {}
 
 
 def Upload_Img():
-    images = ["hieroglyph", "scarab", "eye", "eagle", "tablet", "cartouche", "bgimage","mute","unmute","game_over"]
+    images = ["hieroglyph", "scarab", "eye", "eagle", "tablet", "cartouche", "bgimage","mute","unmute","game_over","dif2","dif3","dif4","dif5"]
     for i in range( len( images ) ):
         file_path = "Images/" + images[i] + ".png"
         images_dict[images[i]] = pygame.image.load( file_path )
@@ -30,11 +30,12 @@ def Screen(tile_length):
     return screen
 
 
-def Window(board, score, health,sound):
+def Window(board, score, health,sound,difficulty):
     screen.blit( images_dict["bgimage"], (0, 0) )
     Draw_Bar( score, health )
     Draw_Board( board )
     Draw_Sound(sound)
+    Draw_Difficulty(difficulty)
 
 
 ######### Stackoverflow
@@ -125,6 +126,20 @@ def Draw_Tile(number, x, y):
     if number != 0:
         screen.blit( img, (x, y) )
 
+def Draw_Difficulty(number):
+    img = None
+    x = To_Pixels( 3 )
+    y = To_Pixels( 0 )
+
+    if number == 2:
+        img = images_dict["dif2"]
+    elif number == 3:
+        img = images_dict["dif3"]
+    elif number == 4:
+        img = images_dict["dif4"]
+    elif number == 5:
+        img = images_dict["dif5"]
+    screen.blit( img, (x, y) )
 
 def Border(x, y):
     x = To_Pixels( x )
