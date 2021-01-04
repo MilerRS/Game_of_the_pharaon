@@ -7,13 +7,13 @@ from pharaoh.constants import WIDTH, HEIGHT, TILES
 
 
 class Game:
-    def __init__(self, screen, number, score, health,sound):
+    def __init__(self, screen, number, score, health, sound):
         self.tiles = TILES
         self.counter = 0
         self.health = health
         self.screen = screen
         self.score = score
-        self.sound= sound
+        self.sound = sound
         if number == 2:
             self.board = self.init_array2()
         elif number == 3:
@@ -22,7 +22,7 @@ class Game:
             self.board = self.init_array4()
         else:
             self.board = self.init_array5()
-        draw.Window( self.board, self.score, self.health,self.sound)
+        draw.Window( self.board, self.score, self.health, self.sound )
 
     def init_array2(self):
         board = np.random.randint( 1, 3, size=(HEIGHT, WIDTH) )
@@ -48,7 +48,7 @@ class Game:
         if x1 == x2 and y1 == y2:
             return True
         return False
-
+######### geeksforgeeks
     def search_adj(self, row, col, value1, value2):
 
         if (row < 0 or row >= HEIGHT or col < 0 or
@@ -68,7 +68,7 @@ class Game:
     def floodFill(self, x, y, value2):
         value1 = self.board[x][y]
         self.search_adj( x, y, value1, value2 )
-
+#########
     def drop_tile(self):
         for j in range( WIDTH ):
             anker_i = HEIGHT - 1
@@ -80,7 +80,7 @@ class Game:
             for i in range( anker_i + 1 ):
                 self.board[i][j] = 0
 
-        anker_i=0
+        anker_i = 0
         for j in range( WIDTH - 1, -1, -1 ):
             if self.board[HEIGHT - 1][j] == 0:
                 anker_i += 1
@@ -92,7 +92,6 @@ class Game:
                         for k in range( j - 1, -1, -1 ):
                             self.board = self.shift( i, k, 1 )
             anker_i -= 1
-
 
     def shift_vector(self, v, i, n, empty=0):
         if n < 0:
@@ -130,4 +129,4 @@ class Game:
         for x in range( HEIGHT ):
             for y in range( WIDTH ):
                 self.board[x][y] = abs( self.board[x][y] )
-        draw.Window( self.board, self.score, self.health ,self.sound)
+        draw.Window( self.board, self.score, self.health, self.sound )

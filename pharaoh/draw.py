@@ -7,7 +7,7 @@ images_dict = {}
 
 
 def Upload_Img():
-    images = ["hieroglyph", "scarab", "eye", "eagle", "tablet", "cartouche", "bgimage","mute","unmute"]
+    images = ["hieroglyph", "scarab", "eye", "eagle", "tablet", "cartouche", "bgimage","mute","unmute","game_over"]
     for i in range( len( images ) ):
         file_path = "Images/" + images[i] + ".png"
         images_dict[images[i]] = pygame.image.load( file_path )
@@ -37,6 +37,7 @@ def Window(board, score, health,sound):
     Draw_Sound(sound)
 
 
+######### Stackoverflow
 _circle_cache = {}
 
 
@@ -78,6 +79,8 @@ def render(text, font, gfcolor=pygame.Color( 253, 193, 78 ), ocolor=(38, 28, 3),
 
     surf.blit( textsurface, (opx, opx) )
     return surf
+
+#########
 
 def Draw_Sound(sound):
     img = None
@@ -131,5 +134,5 @@ def Border(x, y):
 
 
 def GameOver(score,health):
-    screen.blit( images_dict["bgimage"], (0, 0) )
+    screen.blit( images_dict["game_over"], (0, 0) )
     Draw_Bar( score, health )

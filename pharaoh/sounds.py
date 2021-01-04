@@ -11,7 +11,7 @@ sound_dict = {}
 
 
 def load():
-    sound_names = ["pop", "win", "tiles_drop"]
+    sound_names = ["game_over", "tiles_drop"]
     for i in range( len( sound_names ) ):
         file_path = "Sounds/" + sound_names[i] + ".wav"
         sound_dict[sound_names[i]] = pygame.mixer.Sound( file_path )

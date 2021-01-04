@@ -1,5 +1,3 @@
-import time
-
 import pygame
 from pharaoh import draw, sounds
 from pharaoh.game import Game
@@ -43,7 +41,7 @@ if __name__ == '__main__':
         clock.tick( FPS )
 
         if game.health == 0 and play == True:
-            sounds.play_effect( "win" )
+            sounds.play_effect( "game_over" )
             draw.GameOver( game.score, game.health )
             game_over = True
             play = False
@@ -62,7 +60,7 @@ if __name__ == '__main__':
                     difficulty = 2
                     score = 0
                     health = 5
-                    game = Game( screen, difficulty, score, health )
+                    game = Game( screen, difficulty, score, health, game.sound )
 
                     selected = False
                     selected_row = None
@@ -95,7 +93,7 @@ if __name__ == '__main__':
                         selected = False
                         selected_row = None
                         selected_col = None
-                elif col == -2 and row == 10 and not selected:
+                elif col == -2 and row == 10 and not selected and game_over == False:
                     if game.sound == True:
                         game.sound = False
                         draw.Window( game.board, game.score, game.health, game.sound )
@@ -104,7 +102,7 @@ if __name__ == '__main__':
                         game.sound = True
                         draw.Window( game.board, game.score, game.health, game.sound )
                         music.play( -1 )
-                elif col == -2 and row == 10 and selected:
+                elif col == -2 and row == 10 and selected and game_over == False:
                     if game.sound == True:
                         game.sound = False
                         game.reset()
