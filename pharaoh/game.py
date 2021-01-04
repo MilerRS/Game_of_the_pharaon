@@ -54,7 +54,7 @@ class Game:
             return
 
         self.board[row][col] = value2
-        draw.Border( col, row )
+        draw.Border( col + 2, row + 1 )
         self.counter += 1
 
         self.search_adj( row + 1, col, value1, value2 )
@@ -73,14 +73,22 @@ class Game:
                 if self.board[i][j] > 0:
                     self.board[anker_i][j] = self.board[i][j]
                     anker_i -= 1
+
             for i in range( anker_i + 1 ):
                 self.board[i][j] = 0
 
+        anker_i=0
         for j in range( WIDTH - 1, -1, -1 ):
             if self.board[HEIGHT - 1][j] == 0:
-                for i in range( HEIGHT - 1,-1,-1):
-                    for k in range( j-1,-1,-1):
-                        self.board = self.shift( i, k, 1 )
+                anker_i += 1
+
+        while anker_i:
+            for j in range( WIDTH - 1, -1, -1 ):
+                if self.board[HEIGHT - 1][j] == 0:
+                    for i in range( HEIGHT - 1, -1, -1 ):
+                        for k in range( j - 1, -1, -1 ):
+                            self.board = self.shift( i, k, 1 )
+            anker_i -= 1
 
     def shift_vector(self, v, i, n, empty=0):
         if n < 0:
